@@ -1,12 +1,16 @@
 const form = document.getElementById("form");
 const search = document.getElementById("search");
 const result = document.getElementById("result");
+const prev = document.getElementById("prev");
+const next = document.getElementById("next");
 
 /// api URL ///
 const apiURL = "https://api.lyrics.ovh";
 
 /// adding event listener in form
 
+prev.style.display = "none";
+next.style.display = "none";
 form.addEventListener("submit", (e) => {
   e.preventDefault();
   searchValue = search.value.trim();
@@ -36,19 +40,29 @@ function showData(data) {
                     <div>
                         <strong>${song.artist.name}</strong> -${song.title} 
                     </div>
-                    <span data-artist="${song.artist.name}" data-songtitle="${song.title}"> get lyrics</span>
+                    <p data-artist="${song.artist.name}" data-songtitle="${song.title}"> get lyrics</p>
                 </li>`
         )
         .join("")}
     </ul>
   `;
+  displayButtons(data);
+}
+
+function displayButtons(data) {
+  if (data.next) {
+    next.style.display = "flex";
+    next;
+  } else if (data.prev) {
+    prev.style.display = "flex";
+  }
 }
 
 //event listener in get lyrics button
 result.addEventListener("click", (e) => {
   const clickedElement = e.target;
   //checking clicked elemet is button or not
-  if (clickedElement.tagName === "SPAN") {
+  if (clickedElement.tagName === "P") {
     const artist = clickedElement.getAttribute("data-artist");
     const songTitle = clickedElement.getAttribute("data-songtitle");
 

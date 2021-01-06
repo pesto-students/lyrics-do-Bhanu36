@@ -2,7 +2,7 @@
   "name": "lyricsdo",
   "version": "1.0.0",
   "main": "index.js",
-  "repository": "https://github.com/pesto-students/lyricsdo.git",
+  "repository": "https://github.com/pesto-students/lyrics-do-Bhanu36",
   "license": "MIT",
   "scripts": {
     "develop": "serve ."
