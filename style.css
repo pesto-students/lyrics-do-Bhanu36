@@ -132,7 +132,7 @@ li{
     display: flex;
     flex-direction: row;
     justify-content: space-around;
-    width: min-content;
+    width: 20%;
     color: yellow;
     padding:100% 25% 0% 25%;
 }

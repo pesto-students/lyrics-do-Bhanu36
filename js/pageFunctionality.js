@@ -6,6 +6,7 @@ const next = document.getElementById("next");
 
 /// api URL ///
 const apiURL = "https://api.lyrics.ovh";
+const cors = "https://cors-anywhere.herokuapp.com";
 
 /// adding event listener in form
 
@@ -17,12 +18,13 @@ form.addEventListener("submit", (e) => {
   if (!searchValue) {
     alert("There is nothing to search");
   } else {
-    searchSong({ url: `${apiURL}/suggest/${searchValue}` });
+    const url = `${apiURL}/suggest/${searchValue}`;
+    searchSong(url);
   }
 });
 
 //search song
-async function searchSong({ url }) {
+async function searchSong(url) {
   const searchResult = await fetch(url);
   const data = await searchResult.json();
   showData(data);
@@ -40,7 +42,7 @@ function showData(data) {
                     <div>
                         <strong>${song.artist.name}</strong> -${song.title} 
                     </div>
-                    <p data-artist="${song.artist.name}" data-songtitle="${song.title}"> get lyrics</p>
+                    <p artist="${song.artist.name}" songtitle="${song.title}"> get lyrics</p>
                 </li>`
         )
         .join("")}
@@ -50,21 +52,23 @@ function showData(data) {
 }
 
 function displayButtons(data) {
+  console.log(data);
   if (data.next) {
     next.style.display = "flex";
-    next;
-  } else if (data.prev) {
+    next.value = data.next;
+  }
+  if (data.prev) {
     prev.style.display = "flex";
+    next.value = data.prev;
   }
 }
 
 //event listener in get lyrics button
 result.addEventListener("click", (e) => {
   const clickedElement = e.target;
-  //checking clicked elemet is button or not
   if (clickedElement.tagName === "P") {
-    const artist = clickedElement.getAttribute("data-artist");
-    const songTitle = clickedElement.getAttribute("data-songtitle");
+    const artist = clickedElement.getAttribute("artist");
+    const songTitle = clickedElement.getAttribute("songtitle");
 
     getLyrics(artist, songTitle);
   }
@@ -80,3 +84,19 @@ async function getLyrics(artist, songTitle) {
   result.innerHTML = `<h2><strong>${artist}</strong> - ${songTitle}</h2>
     <p>${lyrics}</p>`;
 }
+
+//Pagination
+
+next.addEventListener("click", (e) => {
+  const nextUrl = e.target;
+  const nextUrlValue = nextUrl.getAttribute("value");
+  const nextFetch = `${cors}/${nextUrlValue}`;
+  searchSong(nextFetch);
+});
+
+prev.addEventListener("click", (e) => {
+  const prevUrl = e.target;
+  const prevUrlValue = prevUrl.getAttribute("value");
+  const prevFect = `${cors}/${prevUrlValue}`;
+  searchSong(prevFect);
+});
