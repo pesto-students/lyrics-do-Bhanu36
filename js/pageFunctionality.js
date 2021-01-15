@@ -26,17 +26,17 @@ form.addEventListener("submit", (e) => {
 //search song
 async function searchSong(url) {
   const searchResult = await fetch(url);
-  const data = await searchResult.json();
-  showData(data);
+  const apiResponse = await searchResult.json();
+  showData(apiResponse);
 }
 
 //display final result in html
-function showData(data) {
-  const prevButton = data.prev;
-  const nextButton = data.next;
+function showData(apiResponse) {
+  const prevButton = apiResponse.prev;
+  const nextButton = apiResponse.next;
   result.innerHTML = `
     <ul class="song-list">
-      ${data.data
+      ${apiResponse.data
         .map(
           (song) => `<li>
                     <div>
@@ -48,18 +48,17 @@ function showData(data) {
         .join("")}
     </ul>
   `;
-  displayButtons(data);
+  displayButtons(apiResponse);
 }
 
-function displayButtons(data) {
-  console.log(data);
-  if (data.next) {
+function displayButtons(apiResponse) {
+  if (apiResponse.next) {
     next.style.display = "flex";
-    next.value = data.next;
+    next.value = apiResponse.next;
   }
-  if (data.prev) {
+  if (apiResponse.prev) {
     prev.style.display = "flex";
-    next.value = data.prev;
+    next.value = apiResponse.prev;
   }
 }
 
